@@ -1,0 +1,236 @@
+{
+  "timestamp": 1760425723.8515596,
+  "project": "agentflow-src",
+  "test_duration_seconds": 0.011484384536743164,
+  "classification": {
+    "total": 8,
+    "correct": 5,
+    "incorrect": 3,
+    "details": [
+      {
+        "scenario": "Unit Test Development",
+        "expected": "testing",
+        "predicted": "testing",
+        "correct": true
+      },
+      {
+        "scenario": "New Feature Implementation",
+        "expected": "feature_dev",
+        "predicted": "feature_dev",
+        "correct": true
+      },
+      {
+        "scenario": "Bug Fix - TypeError in Classifier",
+        "expected": "bug_fix",
+        "predicted": "bug_fix",
+        "correct": true
+      },
+      {
+        "scenario": "Refactoring - Extract Utility Functions",
+        "expected": "refactoring",
+        "predicted": "testing",
+        "correct": false
+      },
+      {
+        "scenario": "Documentation - API Reference",
+        "expected": "documentation",
+        "predicted": "documentation",
+        "correct": true
+      },
+      {
+        "scenario": "Deployment - CI/CD Setup",
+        "expected": "deployment",
+        "predicted": "testing",
+        "correct": false
+      },
+      {
+        "scenario": "Research - Vector DB Evaluation",
+        "expected": "research",
+        "predicted": "research",
+        "correct": true
+      },
+      {
+        "scenario": "Testing - Session Monitor Validation",
+        "expected": "testing",
+        "predicted": "feature_dev",
+        "correct": false
+      }
+    ],
+    "accuracy_percentage": 62.5
+  },
+  "cherry_picking": {
+    "scenarios": [
+      {
+        "name": "Unit Test Development",
+        "type": "testing",
+        "size_kb": 187.763671875,
+        "reduction_percent": 6.1181640625,
+        "core_files_count": 10,
+        "dependencies_count": 0,
+        "total_files": 10,
+        "cherry_pick_time": 0.0020782947540283203,
+        "estimated_tokens": 48067
+      },
+      {
+        "name": "New Feature Implementation",
+        "type": "feature_dev",
+        "size_kb": 27.310546875,
+        "reduction_percent": 86.3447265625,
+        "core_files_count": 1,
+        "dependencies_count": 8,
+        "total_files": 9,
+        "cherry_pick_time": 0.0007190704345703125,
+        "estimated_tokens": 6991
+      },
+      {
+        "name": "Bug Fix - TypeError in Classifier",
+        "type": "bug_fix",
+        "size_kb": 0.0,
+        "reduction_percent": 100.0,
+        "core_files_count": 0,
+        "dependencies_count": 0,
+        "total_files": 0,
+        "cherry_pick_time": 0.000102996826171875,
+        "estimated_tokens": 0
+      },
+      {
+        "name": "Refactoring - Extract Utility Functions",
+        "type": "refactoring",
+        "size_kb": 0.0,
+        "reduction_percent": 100.0,
+        "core_files_count": 0,
+        "dependencies_count": 0,
+        "total_files": 0,
+        "cherry_pick_time": 9.369850158691406e-05,
+        "estimated_tokens": 0
+      },
+      {
+        "name": "Documentation - API Reference",
+        "type": "documentation",
+        "size_kb": 93.8798828125,
+        "reduction_percent": 53.06005859375,
+        "core_files_count": 10,
+        "dependencies_count": 0,
+        "total_files": 10,
+        "cherry_pick_time": 0.0017468929290771484,
+        "estimated_tokens": 24033
+      },
+      {
+        "name": "Deployment - CI/CD Setup",
+        "type": "deployment",
+        "size_kb": 23.986328125,
+        "reduction_percent": 88.0068359375,
+        "core_files_count": 1,
+        "dependencies_count": 3,
+        "total_files": 4,
+        "cherry_pick_time": 0.0005102157592773438,
+        "estimated_tokens": 6140
+      },
+      {
+        "name": "Research - Vector DB Evaluation",
+        "type": "research",
+        "size_kb": 0.0,
+        "reduction_percent": 100.0,
+        "core_files_count": 0,
+        "dependencies_count": 0,
+        "total_files": 0,
+        "cherry_pick_time": 0.00015473365783691406,
+        "estimated_tokens": 0
+      },
+      {
+        "name": "Testing - Session Monitor Validation",
+        "type": "testing",
+        "size_kb": 187.763671875,
+        "reduction_percent": 6.1181640625,
+        "core_files_count": 10,
+        "dependencies_count": 0,
+        "total_files": 10,
+        "cherry_pick_time": 0.002529144287109375,
+        "estimated_tokens": 48067
+      }
+    ],
+    "avg_reduction": 67.45599365234375,
+    "avg_size_kb": 65.0880126953125
+  },
+  "refinement": {
+    "questions_tested": 4,
+    "avg_response_time": 4.601478576660156e-05,
+    "learning_insights": {
+      "total_questions": 4,
+      "avg_improvement": 0.275,
+      "insights_count": 0
+    },
+    "examples": [
+      {
+        "question": "I need the database migration utilities but they are not in my context",
+        "session_type": "feature_dev",
+        "expected_type": "missing_file",
+        "actual_type": "missing_file",
+        "response_time": 0.00015783309936523438,
+        "improvement_score": 0.5
+      },
+      {
+        "question": "What are the common error patterns in the authentication module?",
+        "session_type": "bug_fix",
+        "expected_type": "context_info",
+        "actual_type": "ambiguous_requirement",
+        "response_time": 1.2159347534179688e-05,
+        "improvement_score": 0.3
+      },
+      {
+        "question": "Which test fixtures should I use for integration tests?",
+        "session_type": "testing",
+        "expected_type": "clarification",
+        "actual_type": "ambiguous_requirement",
+        "response_time": 8.106231689453125e-06,
+        "improvement_score": 0.3
+      },
+      {
+        "question": "Is there related code in other modules that depends on this?",
+        "session_type": "refactoring",
+        "expected_type": "dependency_info",
+        "actual_type": "general",
+        "response_time": 5.9604644775390625e-06,
+        "improvement_score": 0.0
+      }
+    ]
+  },
+  "workflow": {
+    "workflows_tested": 3,
+    "avg_total_time": 0.0009314219156901041,
+    "quality_score": 6.166666666666667,
+    "details": [
+      {
+        "name": "Unit Test Development",
+        "type": "testing",
+        "size_kb": 187.763671875,
+        "files_count": 10,
+        "question_asked": true,
+        "context_improved": false,
+        "total_time": 0.001943349838256836,
+        "quality_score": 6.5
+      },
+      {
+        "name": "New Feature Implementation",
+        "type": "feature_dev",
+        "size_kb": 27.310546875,
+        "files_count": 9,
+        "question_asked": true,
+        "context_improved": false,
+        "total_time": 0.0007340908050537109,
+        "quality_score": 7.5
+      },
+      {
+        "name": "Bug Fix - TypeError in Classifier",
+        "type": "bug_fix",
+        "size_kb": 0.0,
+        "files_count": 0,
+        "question_asked": true,
+        "context_improved": false,
+        "total_time": 0.00011682510375976562,
+        "quality_score": 4.5
+      }
+    ]
+  },
+  "overall_status": "\u274c NEEDS IMPROVEMENT"
+}

@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-10-14T14:51:26.954266",
+  "session_id": "test_session_001",
+  "metadata": {
+    "session_id": "test_session_001",
+    "start_time": "2025-10-14T14:51:26.954005Z",
+    "end_time": "2025-10-14T14:51:26.954005Z",
+    "event_count": 1
+  },
+  "interactions": [
+    {
+      "session_id": "test_session_001",
+      "timestamp": "2025-10-14T14:51:26.954005Z",
+      "event_type": "task_start",
+      "details": "Test task"
+    }
+  ],
+  "logs": []
+}

@@ -1,0 +1,110 @@
+[
+  {
+    "session": "SESSION_2025-10-13_TAGGED.md",
+    "status": "SUCCESS",
+    "metrics": {
+      "session_size_bytes": 12530,
+      "session_lines": 352,
+      "manifest_size_bytes": 1342,
+      "compression_ratio": 0.8928970470869912,
+      "prep_time_seconds": 16.516181707382202,
+      "bootstrap_time_seconds": 0.0018935203552246094,
+      "quality_score": 10.0,
+      "completed_tasks": 2,
+      "pending_tasks": 1,
+      "key_decisions": 1,
+      "blockers": 0
+    },
+    "quality_analysis": {
+      "has_phase_info": true,
+      "has_completed_tasks": true,
+      "has_pending_tasks": true,
+      "has_key_decisions": true,
+      "has_next_steps": true,
+      "has_blockers": false,
+      "has_modified_files": true,
+      "bootstrap_instructions_count": 4
+    }
+  },
+  {
+    "session": "SESSION_COMPLETE_2025-10-13.md",
+    "status": "SUCCESS",
+    "metrics": {
+      "session_size_bytes": 14348,
+      "session_lines": 471,
+      "manifest_size_bytes": 1382,
+      "compression_ratio": 0.9036799553944801,
+      "prep_time_seconds": 12.84957242012024,
+      "bootstrap_time_seconds": 0.002445697784423828,
+      "quality_score": 10.0,
+      "completed_tasks": 2,
+      "pending_tasks": 1,
+      "key_decisions": 2,
+      "blockers": 0
+    },
+    "quality_analysis": {
+      "has_phase_info": true,
+      "has_completed_tasks": true,
+      "has_pending_tasks": true,
+      "has_key_decisions": true,
+      "has_next_steps": true,
+      "has_blockers": false,
+      "has_modified_files": true,
+      "bootstrap_instructions_count": 4
+    }
+  },
+  {
+    "session": "SESSION_REVIEW_2025-10-13.md",
+    "status": "SUCCESS",
+    "metrics": {
+      "session_size_bytes": 9738,
+      "session_lines": 301,
+      "manifest_size_bytes": 1329,
+      "compression_ratio": 0.863524337646334,
+      "prep_time_seconds": 18.236894369125366,
+      "bootstrap_time_seconds": 0.002377033233642578,
+      "quality_score": 10.0,
+      "completed_tasks": 2,
+      "pending_tasks": 1,
+      "key_decisions": 1,
+      "blockers": 0
+    },
+    "quality_analysis": {
+      "has_phase_info": true,
+      "has_completed_tasks": true,
+      "has_pending_tasks": true,
+      "has_key_decisions": true,
+      "has_next_steps": true,
+      "has_blockers": false,
+      "has_modified_files": true,
+      "bootstrap_instructions_count": 4
+    }
+  },
+  {
+    "session": "SESSION_SUMMARY_2025-10-14.md",
+    "status": "SUCCESS",
+    "metrics": {
+      "session_size_bytes": 8478,
+      "session_lines": 299,
+      "manifest_size_bytes": 1361,
+      "compression_ratio": 0.8394668553904223,
+      "prep_time_seconds": 18.959062814712524,
+      "bootstrap_time_seconds": 0.0022482872009277344,
+      "quality_score": 10.0,
+      "completed_tasks": 2,
+      "pending_tasks": 1,
+      "key_decisions": 2,
+      "blockers": 1
+    },
+    "quality_analysis": {
+      "has_phase_info": true,
+      "has_completed_tasks": true,
+      "has_pending_tasks": true,
+      "has_key_decisions": true,
+      "has_next_steps": true,
+      "has_blockers": true,
+      "has_modified_files": true,
+      "bootstrap_instructions_count": 5
+    }
+  }
+]

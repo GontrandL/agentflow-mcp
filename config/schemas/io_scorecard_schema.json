@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IOScorecard",
+  "description": "Input vs Output comparison scorecard for quality validation",
+  "type": "object",
+  "required": ["session_id", "ticket_id", "rule_crc", "context_crc", "scores", "violations", "recommendations"],
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "pattern": "^S-\\d{4}-\\d{2}-\\d{2}-\\d{3}$",
+      "description": "Session identifier"
+    },
+    "ticket_id": {
+      "type": "string",
+      "pattern": "^[A-Z]+-[A-Z0-9-]+$",
+      "description": "Ticket identifier"
+    },
+    "rule_crc": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "CRC of active rules"
+    },
+    "context_crc": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "CRC of context pack"
+    },
+    "scores": {
+      "type": "object",
+      "required": ["fidelity", "rule_adherence", "precision_drift", "evidence_coverage", "tool_hygiene", "waste_tokens"],
+      "properties": {
+        "fidelity": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Output coverage of expectations"
+        },
+        "rule_adherence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Compliance with rules"
+        },
+        "precision_drift": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Focus drift from reference"
+        },
+        "evidence_coverage": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "% of factual assertions with citations"
+        },
+        "tool_hygiene": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Tool usage success rate"
+        },
+        "waste_tokens": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "% of tokens providing no value"
+        },
+        "overall": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Weighted average of all scores"
+        }
+      }
+    },
+    "violations": {
+      "type": "array",
+      "description": "List of rule violations detected",
+      "items": {
+        "type": "object",
+        "required": ["type", "severity", "description"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["caps_exceeded", "tool_forbidden", "evidence_missing", "acceptance_not_met", "scope_drift", "write_out_of_scope"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["warning", "soft_block", "hard_block"]
+          },
+          "description": {"type": "string"},
+          "location": {"type": "string"},
+          "timestamp": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "description": "Actionable recommendations for improvement",
+      "items": {
+        "type": "string",
+        "minLength": 10
+      }
+    },
+    "nudges_issued": {
+      "type": "array",
+      "description": "Nudges that were issued during session",
+      "items": {
+        "type": "object",
+        "required": ["type", "severity", "message", "timestamp"],
+        "properties": {
+          "type": {"type": "string"},
+          "severity": {"type": "string", "enum": ["warning", "soft_block", "hard_block"]},
+          "message": {"type": "string"},
+          "timestamp": {"type": "string", "format": "date-time"},
+          "resolved": {"type": "boolean", "default": false}
+        }
+      }
+    },
+    "autofixes_applied": {
+      "type": "array",
+      "description": "Automatic fixes applied to input",
+      "items": {
+        "type": "object",
+        "required": ["type", "description", "validated"],
+        "properties": {
+          "type": {"type": "string", "enum": ["minor", "major"]},
+          "description": {"type": "string"},
+          "validated": {"type": "boolean"},
+          "pack_version_before": {"type": "integer"},
+          "pack_version_after": {"type": "integer"},
+          "timestamp": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "timestamp": {"type": "string", "format": "date-time"},
+        "milestone": {"type": "string", "enum": ["PRE", "RUN_mid", "RUN_precommit", "POST"]},
+        "tokens_consumed": {"type": "integer", "minimum": 0},
+        "duration_seconds": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

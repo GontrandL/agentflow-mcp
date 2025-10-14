@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContextDigest",
+  "description": "Digest of ContextPack sections for CRC calculation",
+  "type": "object",
+  "required": ["ticket_id", "pack_version", "key_sections", "referenced_files"],
+  "properties": {
+    "ticket_id": {
+      "type": "string",
+      "pattern": "^[A-Z]+-[A-Z0-9-]+$",
+      "description": "Unique ticket identifier"
+    },
+    "pack_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Context pack version number"
+    },
+    "key_sections": {
+      "type": "object",
+      "required": ["problem_brief_hash", "constraints_hash", "acceptance_hash", "evidence_map_hash"],
+      "properties": {
+        "problem_brief_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "constraints_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "acceptance_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "evidence_map_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "recent_changes_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "relevant_files_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    },
+    "referenced_files": {
+      "type": "array",
+      "description": "Files referenced in this context pack",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha"],
+        "properties": {
+          "path": {"type": "string"},
+          "sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+          "size_bytes": {"type": "integer", "minimum": 0},
+          "relevance_score": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": {"type": "string", "format": "date-time"},
+        "created_by": {"type": "string"},
+        "session_id": {"type": "string"}
+      }
+    }
+  }
+}

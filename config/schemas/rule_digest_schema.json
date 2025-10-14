@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RuleDigest",
+  "description": "Canonical digest of all active rules/policies for CRC calculation",
+  "type": "object",
+  "required": ["version", "caps", "tools_allowlist", "acceptance_criteria", "evidence_policy", "safety"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d{4}\\.\\d{2}\\.\\d{2}$",
+      "description": "Version date in YYYY.MM.DD format"
+    },
+    "caps": {
+      "type": "object",
+      "description": "Token budget caps per section",
+      "properties": {
+        "problem_brief_tokens": {"type": "integer", "minimum": 100, "maximum": 500},
+        "recent_changes_tokens": {"type": "integer", "minimum": 500, "maximum": 2000},
+        "constraints_tokens": {"type": "integer", "minimum": 100, "maximum": 500},
+        "relevant_files_tokens": {"type": "integer", "minimum": 1000, "maximum": 8000}
+      }
+    },
+    "tools_allowlist": {
+      "type": "object",
+      "description": "Allowed tools per ticket type",
+      "patternProperties": {
+        "^(bug|feature|doc|refactor|test|ops)$": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z]+\\.[a-z_]+$"
+          }
+        }
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "description": "Must-satisfy criteria for completion",
+      "items": {
+        "type": "string",
+        "minLength": 5
+      },
+      "minItems": 1
+    },
+    "evidence_policy": {
+      "type": "object",
+      "required": ["coverage_min", "no_orphan_refs"],
+      "properties": {
+        "coverage_min": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Minimum % of factual assertions with sources"
+        },
+        "no_orphan_refs": {
+          "type": "boolean",
+          "description": "Reject references to non-existent sources"
+        }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "required": ["write_scopes", "human_approval_required"],
+      "properties": {
+        "write_scopes": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[a-zA-Z0-9_/\\-*]+$"},
+          "description": "Allowed write paths (glob patterns)"
+        },
+        "read_scopes": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[a-zA-Z0-9_/\\-*]+$"},
+          "description": "Allowed read paths (glob patterns)"
+        },
+        "human_approval_required": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Operations requiring human approval"
+        }
+      }
+    }
+  }
+}

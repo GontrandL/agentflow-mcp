@@ -1,0 +1,68 @@
+{
+  "tasks": [
+    {
+      "id": "escalation_engine",
+      "name": "escalation_engine.py",
+      "description": "Implement EscalationEngine with tier logic for waterfall system. Includes should_escalate(), _free_tier_failed(), _mid_tier_failed(), get_next_tier(). FREE tier: 3 attempts or quality<6. Mid tier: 2 attempts or quality<8.",
+      "priority": "high",
+      "estimated_minutes": 5,
+      "output_file": "agentflow/orchestration/escalation_engine.py"
+    },
+    {
+      "id": "waterfall_orchestrator",
+      "name": "waterfall_orchestrator.py",
+      "description": "Implement WaterfallOrchestrator with 3-tier escalation (FREE/mid/premium). Methods: _free_tier_attempt(), _mid_tier_attempt(), _premium_tier_attempt(), _is_perfect(), _finalize(). Integrates CostTracker, EscalationEngine, QualityValidator.",
+      "priority": "high",
+      "estimated_minutes": 8,
+      "output_file": "agentflow/orchestration/waterfall_orchestrator.py"
+    },
+    {
+      "id": "interactive_orchestrator",
+      "name": "interactive_orchestrator.py",
+      "description": "Implement InteractiveOrchestrator with clarification system. Analyzes task for ambiguities (missing tech stack, unclear scope, missing context). Returns questions if confidence<80. Uses FREE model for question generation.",
+      "priority": "medium",
+      "estimated_minutes": 10,
+      "output_file": "agentflow/orchestration/interactive_orchestrator.py"
+    },
+    {
+      "id": "quality_evaluator",
+      "name": "quality_evaluator.py",
+      "description": "Implement QualityEvaluationOrchestrator with multi-model comparison. Generates with 2-3 models in parallel, FREE model judges all outputs. Tracks model win rates and performance statistics in JSON.",
+      "priority": "medium",
+      "estimated_minutes": 8,
+      "output_file": "agentflow/orchestration/quality_evaluator.py"
+    },
+    {
+      "id": "mcp_feedback_receiver",
+      "name": "mcp_feedback_receiver.py",
+      "description": "Implement FeedbackManager for MCP feedback loop. Stores feedback with UUID, auto-improves prompts based on validation patterns. Includes async store_feedback() and improve_prompts() methods.",
+      "priority": "medium",
+      "estimated_minutes": 6,
+      "output_file": "agentflow/mcp/feedback_receiver.py"
+    },
+    {
+      "id": "dashboard",
+      "name": "dashboard.py",
+      "description": "Implement FastAPI + SSE real-time dashboard. DashboardManager tracks tasks/logs/stats. SSE endpoint streams updates every second. Embedded HTML with dark theme, progress bars, live logs.",
+      "priority": "medium",
+      "estimated_minutes": 7,
+      "output_file": "agentflow/mcp/dashboard.py"
+    },
+    {
+      "id": "context_injector",
+      "name": "context_injector.py",
+      "description": "Implement ContextInjector for one-time context enrichment. Analyzes context needs (project/tech_stack/patterns). Injects rich context once to save 60-80% tokens on retries.",
+      "priority": "low",
+      "estimated_minutes": 6,
+      "output_file": "agentflow/orchestration/context_injector.py"
+    },
+    {
+      "id": "parallel_executor",
+      "name": "parallel_executor.py",
+      "description": "Implement ParallelExecutor with ThreadPoolExecutor. Executes multiple tasks simultaneously with max_workers parameter. Includes progress tracking, error handling per task, timeout support.",
+      "priority": "low",
+      "estimated_minutes": 8,
+      "output_file": "agentflow/orchestration/parallel_executor.py"
+    }
+  ]
+}

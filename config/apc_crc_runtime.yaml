@@ -1,0 +1,45 @@
+apc_crc_runtime:
+  layers: [global, section, focal]
+  bus: events
+  state_machine: [OK, WARN, SOFT, HARD, RESCUE]
+  checks:
+    milestones: [PRE, RUN_mid, RUN_precommit, POST]
+    critical_tools: [write, edit, bash, network, pkg_install, test_run, deploy]
+    tokens_window:
+      default: 1800
+      tighten_on_warn: 900
+      relax_on_green: 3000
+  thresholds:
+    profiles:
+      default: { drift_max: 0.08, fidelity_min: 0.92, evidence_min: 0.95 }
+      creative:{ drift_max: 0.15, fidelity_min: 0.85, evidence_min: 0.80 }
+      critical:{ drift_max: 0.05, fidelity_min: 0.96, evidence_min: 0.98 }
+    adapt:
+      on_repeated_soft_in_section:
+        adjust_caps_pct: -10
+        raise_fidelity: +0.02
+  cache:
+    pgvector:
+      table: expectation_vectors
+      namespace_key: "${ticket_id}:${pack_version}"
+    lru:
+      capacity_items: 512
+  nudges:
+    max_lines: 2
+    templates:
+      - "Focus: recentre sur files/API référencés {refs}"
+      - "Evidence: cite [[EVID:{id}]] ou retire l'assertion"
+      - "Caps: résume en 2 bullets, garde les IDs"
+  autofix:
+    minor:
+      auto_apply: true
+      limits: { excerpt_lines_max: 10, section_reduction_max_pct: 15, budget_rebalance_pct: 10 }
+    major:
+      require_validation: true
+      types: [add_sources, change_acceptance, change_policy, refactor_section_gt20pct, scope_change]
+  enforcement:
+    hard_block_if:
+      - tool_forbidden
+      - write_out_of_scope
+      - pack_integrity_failed
+      - "fidelity<0.80_after_soft"

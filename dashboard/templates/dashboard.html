@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartOrchestrator Metrics Dashboard</title>
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>SmartOrchestrator Metrics Dashboard</h1>
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Overview Cards -->
+        <section class="metrics-cards">
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <div class="card-content">
+                    <div class="card-label">Total Cost</div>
+                    <div class="card-value" id="totalCost">$0.0000</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <div class="card-content">
+                    <div class="card-label">Total Tasks</div>
+                    <div class="card-value" id="totalTasks">0</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <div class="card-content">
+                    <div class="card-label">Average Cost/Task</div>
+                    <div class="card-value" id="avgCost">$0.0000</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">✅</div>
+                <div class="card-content">
+                    <div class="card-label">Success Rate</div>
+                    <div class="card-value" id="successRate">0%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="chart-container">
+                <h2>Cost Over Time</h2>
+                <canvas id="costChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h2>Cost by Provider</h2>
+                <canvas id="providerChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Recent Tasks Table -->
+        <section class="tasks-section">
+            <h2>Recent Tasks</h2>
+            <div class="table-container">
+                <table class="tasks-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Provider</th>
+                            <th>Operation</th>
+                            <th>Input Tokens</th>
+                            <th>Output Tokens</th>
+                            <th>Cost</th>
+                            <th>Latency (ms)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasksBody">
+                        <tr>
+                            <td colspan="7" class="no-data">No tasks yet. Waiting for data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div>Last updated: <span id="lastUpdate">Never</span></div>
+            <div>Session uptime: <span id="uptime">0s</span></div>
+        </footer>
+    </div>
+
+    <script src="/static/dashboard.js"></script>
+</body>
+</html>

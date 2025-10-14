@@ -1,0 +1,265 @@
+# APC CRC Cognitive Control Policy
+# Version: 1.0.0
+# Date: 2025-10-14
+# Authors: Gontrand (strategic design), Claude (implementation), AgentFlow (validation)
+
+apc_crc_policy:
+  version: "1.0.0"
+
+  # ============================================================================
+  # 1. CRC GRANULARITY - Hierarchical (global + sections + focal)
+  # ============================================================================
+  granularity:
+    global: true
+    sections:
+      - problem_brief
+      - constraints
+      - acceptance
+      - evidence_map
+      - recent_changes
+      - relevant_files
+    focal: true   # CRC of actively used section
+
+  # ============================================================================
+  # 2. EXPECTATION VECTORS - Hybrid (heuristics + lightweight embeddings)
+  # ============================================================================
+  expectation_vectors:
+    mode: hybrid
+
+    embeddings:
+      model: "bge-small-int8"  # Lightweight local embedding
+      store: "pgvector"         # Vector store (can be FAISS for local)
+      cache: true               # Cache by ticket/pack_version
+      fallback: "local"         # Never use external API by default
+
+    heuristics:
+      enabled: true
+      tables:
+        caps:
+          - problem_brief_tokens
+          - recent_changes_tokens
+          - relevant_files_tokens
+        tools_allowlist:
+          - bug
+          - feature
+          - doc
+          - ops
+          - refactor
+          - test
+        safety_patterns:
+          - write_scopes
+          - read_scopes
+          - forbidden_operations
+
+  # ============================================================================
+  # 3. CHECK FREQUENCY - Adaptive (tokens + milestones + events)
+  # ============================================================================
+  check_frequency:
+    milestones:
+      - PRE        # Before execution starts
+      - RUN_mid    # Midpoint of execution
+      - RUN_precommit  # Before commit/save
+      - POST       # After execution completes
+
+    tokens_window:
+      default: 1800                    # Normal monitoring interval
+      tighten_on_nudge: 900            # After nudge issued
+      relax_on_green: 3000             # When all scores excellent
+
+    events:
+      - pack_delta                     # Context pack changed
+      - critical_file_changed          # File in acceptance_criteria modified
+      - major_test_failure             # Test failed
+      - tool_policy_violation          # Forbidden tool used
+
+    adaptation:
+      excellent_threshold:
+        fidelity: 0.95
+        evidence: 0.98
+        drift: 0.05
+      rescan_after_nudge_windows: 2    # Monitor closely for 2 windows
+
+  # ============================================================================
+  # 4. NUDGE SEVERITY - Cascade (warning → soft-block → hard-block)
+  # ============================================================================
+  nudge_severity:
+    warning:
+      thresholds:
+        drift: 0.05
+        fidelity_min: 0.90
+        evidence_min: 0.95
+      message_format: "1-2 lines, actionable, no verbose explanation"
+
+    soft_block:
+      thresholds:
+        drift: 0.10
+        fidelity_min: 0.90
+        evidence_min: 0.95
+      repeat_violation: 2              # Escalate after N warnings
+      requires_confirmation: true
+      provides_suggestion: true
+
+    hard_block:
+      conditions:
+        - tool_forbidden                      # Tool not in allowlist
+        - write_out_of_scope                  # Write outside RW scopes
+        - fidelity_below_0.80_after_soft      # Ignored soft-block
+        - pack_integrity_failed               # CRC/signature invalid
+        - critical_acceptance_violated        # Must-have criteria not met
+      requires_human_intervention: true
+
+  # ============================================================================
+  # 5. INPUT AUTO-FIX - Hybrid (minor auto, major validated)
+  # ============================================================================
+  autofix:
+    minor:
+      auto_apply: true
+      limits:
+        excerpt_lines_max: 10              # Max lines to add
+        section_reduction_max_pct: 15      # Max % to compress
+        budget_rebalance_pct: 10           # Max % to rebalance
+      types:
+        - add_missing_excerpt              # Add missing code snippet
+        - compress_verbose_section         # Compress over-budget section
+        - fix_broken_reference             # Fix broken file/PR link
+        - rebalance_token_budget           # Adjust section allocations
+
+    major:
+      require_validation: true
+      types:
+        - add_sources                      # Add new evidence sources
+        - change_acceptance                # Modify acceptance criteria
+        - change_tools_policy              # Update tool allowlist
+        - refactor_section_gt20pct         # Refactor >20% of section
+        - scope_change                     # Add/remove relevant files
+      validation_method: "human_approval"  # or "quality_gate_review"
+
+  # ============================================================================
+  # 6. SCORING & PASS CRITERIA
+  # ============================================================================
+  scoring:
+    metrics:
+      fidelity:
+        desc: "Output covers expectations (acceptance + constraints)"
+        weight: 0.30
+        calculation: "cosine(output_vectors, expectation_vectors)"
+
+      evidence_coverage:
+        desc: "Factual assertions have source citations"
+        weight: 0.25
+        calculation: "cited_facts / total_facts"
+
+      rule_adherence:
+        desc: "Rules (caps, tools, policies) respected"
+        weight: 0.25
+        calculation: "violations_count == 0 ? 1.0 : 1.0 - violations_severity"
+
+      precision_drift:
+        desc: "Precision loss vs start (lower is better)"
+        weight: 0.20
+        calculation: "abs(current_focus - reference_focus)"
+
+    pass_criteria:
+      fidelity: ">=0.92"
+      evidence_coverage: ">=0.95"
+      rule_adherence: ">=0.97"
+      drift: "<=0.08"
+
+    aggregation: "weighted_average"
+    minimum_pass_score: 0.90
+
+  # ============================================================================
+  # 7. CRC CALCULATION DETAILS
+  # ============================================================================
+  crc_calculation:
+    algorithm: "sha256"
+    normalization:
+      - sort_keys: true
+      - remove_whitespace: true
+      - lowercase_keys: false
+      - separators: [",", ":"]
+    encoding: "utf-8"
+
+    sections_to_hash:
+      problem_brief:
+        - description
+        - context
+        - constraints_summary
+      constraints:
+        - token_budget
+        - time_limit
+        - criticality
+      acceptance:
+        - criteria
+        - priority
+      evidence_map:
+        - sources
+        - citations
+      recent_changes:
+        - commits
+        - prs
+      relevant_files:
+        - paths
+        - checksums
+
+  # ============================================================================
+  # 8. RULE NUDGE PATTERNS
+  # ============================================================================
+  nudge_patterns:
+    caps_exceeded:
+      template: "Tu dépasses {section}_tokens de {pct}%. Résume en {bullets} bullets, conserve les IDs {ids}."
+      severity: warning
+
+    evidence_missing:
+      template: "Une phrase factuelle sans source détectée: '{excerpt}'. Ajoute [[EVID:...]] ou retire l'assertion."
+      severity: soft_block
+
+    tool_misuse:
+      template: "{tool} > {duration} min. Utilise le subset {subset} et fixe le seed."
+      severity: warning
+
+    acceptance_gap:
+      template: "Couverture actuelle {current}% < {target}%. Ajoute un test paramétré pour cas '{missing_case}'."
+      severity: soft_block
+
+    focus_drift:
+      template: "Focus: recentre sur files/API cités dans pack. Fichiers hors scope: {out_of_scope_files}."
+      severity: warning
+
+    scope_creep:
+      template: "Scope creep détecté: {new_files} non dans relevant_files. Justifie ou retire."
+      severity: soft_block
+
+  # ============================================================================
+  # 9. LOGGING & REPLAY
+  # ============================================================================
+  logging:
+    enabled: true
+    destination: "resource://audits/{session_id}"
+    events:
+      - crc_calculated
+      - nudge_issued
+      - autofix_applied
+      - scorecard_generated
+      - milestone_passed
+    format: "json"
+    replayable: true
+    retention_days: 90
+
+  # ============================================================================
+  # 10. INTEGRATION HOOKS
+  # ============================================================================
+  integration:
+    session_context_curator:
+      enabled: true
+      inject_at: ["curate_context", "cherry_pick", "refine"]
+
+    quality_gates:
+      enabled: true
+      gates: ["PRE", "RUN", "POST"]
+
+    mcp_resources:
+      - "resource://crc/snapshot/{session_id}"
+      - "resource://scorecard/io/{session_id}"
+      - "resource://nudges/{session_id}"
+      - "resource://autofixes/{session_id}"

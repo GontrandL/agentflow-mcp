@@ -1,0 +1,10 @@
+{
+  "version": "0.12.0",
+  "specsDir": "openspec/specs",
+  "changesDir": "openspec/changes",
+  "tools": {
+    "claude": true,
+    "cursor": false,
+    "copilot": false
+  }
+}
