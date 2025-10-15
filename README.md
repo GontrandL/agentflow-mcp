@@ -114,9 +114,21 @@ result = HybridOrchestrator(80).validate_worker_output('worker', task, code)
 
 ## 📚 Documentation
 
-- [INSTALL.md](INSTALL.md) - Detailed setup
-- [EXAMPLES.md](EXAMPLES.md) - More examples
-- [BETA_RELEASE_READINESS.md](BETA_RELEASE_READINESS.md) - Full assessment
+### User Guides
+- [Installation Guide](INSTALL.md) - Detailed setup instructions
+- [Quick Start](docs/guides/QUICK_INSTALL.md) - Get running in 5 minutes
+- [Examples](docs/guides/EXAMPLES.md) - 14 working code examples
+- [Setup OpenRouter](docs/guides/SETUP_OPENROUTER.md) - Configure FREE models
+
+### Developer Docs
+- [Architecture](docs/architecture/) - System architecture & design
+- [Development](docs/development/) - Development process & milestones
+- [Research](docs/research/) - Research papers & design decisions
+
+### More
+- [Contributing](CONTRIBUTING.md) - How to contribute
+- [Changelog](CHANGELOG.md) - Version history
+- [Full Documentation Index](docs/README.md) - Complete docs
 
 ---
 
