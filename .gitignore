@@ -62,6 +62,12 @@ session_*.md
 worker*.log
 delegation_pool*.log
 
+# Development artifacts (keep organized in archive/ if needed)
+# Prevent accidental commits of development status files
+*_STATUS_*.md
+*_COMPLETE_*.md
+*_SUCCESS_*.md
+
 # Build artifacts
 *.whl
 *.tar.gz
